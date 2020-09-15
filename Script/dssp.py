@@ -31,3 +31,25 @@ def extraction_atome(fichier_pdb, fichier_text):
                 text.write("{}	{}	{}	{}	{}	{} \n".format(posi,resid,nam,x, y, z))
     return fichier_text
 
+
+def dico_coord(file_text):
+	dico = {}
+	with open(file_text,"r") as t:
+		for ligne in t:
+			l = ligne.split("\t")
+			posi = l[0]
+			res = l[1]
+			at = l[2]
+			x, y, z = l[3], l[4], l[5].strip()
+			if posi in dico:
+				dico[posi].append((res, at, x,y,z))
+				dico[posi] = [(res, at, x, y, z)]
+	return dico, position
+
+if __name__ == '__main__':
+    file_pdb = sys.argv[1]
+    file_text = sys.argv[2]
+    extraction_atome(file_pdb,file_text)
+    dico, position=dico_coord(file_text)
+    print(position[:10])    
+
